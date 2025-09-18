@@ -1,14 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const db = require('./config/db'); // We will create this next
+const db = require('./config/db');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors()); // Allows our frontend to talk to our backend
-app.use(express.json()); // Allows us to read JSON from request bodies
+app.use(cors());
+app.use(express.json());
+
+// --- API Routes ---
+const authRoutes = require('./routes/auth.routes');
+app.use('/api/auth', authRoutes);
 
 // Health Check Endpoint (as required by the project)
 app.get('/health', async (req, res) => {
@@ -26,7 +30,7 @@ app.get('/health', async (req, res) => {
       error: error.message,
     });
   }
-});
+}); // <-- This closing parenthesis was likely the missing piece
 
 // Simple Welcome Route
 app.get('/', (req, res) => {
