@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import apiClient from '../api'
 import Navbar from '../components/Navbar'
 
-function ProductDetailPage() {
+function ProductDetailPage({ onLogout }) {
   const { productId } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState(null)
@@ -48,7 +48,7 @@ function ProductDetailPage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-7xl mx-auto">
-        <Navbar />
+        <Navbar onLogout={onLogout} />
         {product && (
           <div>
             <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
@@ -63,7 +63,7 @@ function ProductDetailPage() {
                 <div className="text-2xl font-bold capitalize">{product.risk_level}</div>
               </div>
             </div>
-
+            
             <form onSubmit={handleInvestment} className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-md">
               <h2 className="text-2xl font-bold mb-4">Make an Investment</h2>
               {error && <p className="text-red-500 mb-4">{error}</p>}

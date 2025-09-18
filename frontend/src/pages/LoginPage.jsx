@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('')
@@ -68,6 +69,9 @@ function LoginPage({ onLogin }) {
             {loading ? 'Logging In...' : 'Log In'}
           </button>
         </form>
+        <p className="text-center text-gray-400 text-sm mt-6">
+          Don't have an account? <Link to="/signup" className="text-indigo-400 hover:underline">Sign Up</Link>
+        </p>
       </div>
     </div>
   )

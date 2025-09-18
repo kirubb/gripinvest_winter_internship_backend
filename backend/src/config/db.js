@@ -1,9 +1,10 @@
 const mysql = require('mysql2/promise');
 
+const isTestEnvironment = process.env.NODE_ENV === 'test';
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT || 3306, // <-- Add this line
+  host: isTestEnvironment ? 'localhost' : process.env.DB_HOST,
+  port: process.env.DB_PORT || 3306,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
@@ -12,6 +13,8 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-console.log('✅ MySQL Connection Pool Created');
+if (!isTestEnvironment) {
+  console.log('✅ MySQL Connection Pool Created');
+}
 
 module.exports = pool;

@@ -4,11 +4,13 @@ This project was developed with the extensive use of Google's Gemini as an AI-po
 
 ## How AI Helped
 
-- **Boilerplate Code Generation**: Generated initial setup for the Express server, React components, and Jest test files.
-- **Debugging**: Helped diagnose and resolve various errors, including Jest configuration issues, CORS problems, and Docker setup errors.
-- **Concept Explanation**: Provided clear, step-by-step explanations for concepts like JWT authentication, multi-stage Docker builds, and API testing with Supertest.
+- **Boilerplate Code Generation**: Generated initial setup for the Express server, React components, and Jest/Vitest test files.
+- **Debugging**: Helped diagnose and resolve various errors, including Jest configuration issues, CORS problems, module syntax errors, and Docker setup errors.
+- **Concept Explanation**: Provided clear, step-by-step explanations for concepts like JWT authentication, multi-stage Docker builds, API testing with Supertest, and frontend state management.
 - **Code Refactoring**: Assisted in restructuring the Express application to separate the server from the app logic, making it more robust and testable.
-- **Best Practices**: Offered guidance on best practices, such as creating a reusable `axios` client on the frontend and using foreign keys in the database schema.
+- **Feature Implementation**: Provided the complete code for core features and suggested high-impact additions like the frontend signup page and dashboard analytics.
+- **Simulating AI Features**: Generated the logic for the "simulated" AI features, such as the password strength checker and the automatic product description creator.
+- **Best Practices**: Offered guidance on best practices, such as creating a reusable `axios` client on the frontend and using environment variables.
 
 ## Impact on the Project
 

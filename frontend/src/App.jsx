@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import ProductsPage from './pages/ProductsPage'
-import ProductDetailPage from './pages/ProductDetailPage' // Import the new page
+import ProductDetailPage from './pages/ProductDetailPage'
+import SignupPage from './pages/SignupPage'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -22,6 +23,11 @@ function App() {
     setToken(newToken)
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    setToken(null)
+  }
+
   if (loading) {
     return <div className="min-h-screen bg-gray-900" />
   }
@@ -29,22 +35,22 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/signup" element={<SignupPage />} />
         <Route
           path="/login"
           element={token ? <Navigate to="/" /> : <LoginPage onLogin={handleLogin} />}
         />
         <Route
           path="/"
-          element={token ? <DashboardPage /> : <Navigate to="/login" />}
+          element={token ? <DashboardPage onLogout={handleLogout} /> : <Navigate to="/login" />}
         />
         <Route
           path="/products"
-          element={token ? <ProductsPage /> : <Navigate to="/login" />}
+          element={token ? <ProductsPage onLogout={handleLogout} /> : <Navigate to="/login" />}
         />
-        {/* Add the new route for a single product */}
         <Route
           path="/products/:productId"
-          element={token ? <ProductDetailPage /> : <Navigate to="/login" />}
+          element={token ? <ProductDetailPage onLogout={handleLogout} /> : <Navigate to="/login" />}
         />
       </Routes>
     </BrowserRouter>

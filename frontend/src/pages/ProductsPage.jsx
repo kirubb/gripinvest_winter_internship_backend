@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom' // This line was missing
+import { Link } from 'react-router-dom'
 import apiClient from '../api'
 import Navbar from '../components/Navbar'
 
-function ProductsPage() {
+function ProductsPage({ onLogout }) {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -28,7 +28,7 @@ function ProductsPage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-7xl mx-auto">
-        <Navbar />
+        <Navbar onLogout={onLogout} />
         <h1 className="text-3xl font-bold mb-6">Investment Products</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
