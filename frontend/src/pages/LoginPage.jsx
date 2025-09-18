@@ -1,19 +1,47 @@
-import React, { useState } from 'react';
+import React, 'useState'
+import axios from 'axios'
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Login attempt with:', { email, password });
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setLoading(true)
+    setError('')
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3001/api/auth/login',
+        {
+          email: email,
+          password: password,
+        }
+      )
+
+      const { token } = response.data
+      console.log('Login successful! Token:', token)
+      alert('Login successful! Check the console for your token.')
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-6">Welcome Back</h2>
         <form onSubmit={handleSubmit}>
+          {error && (
+            <p className="bg-red-500 text-white p-3 rounded-md text-center mb-4">
+              {error}
+            </p>
+          )}
+
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-bold mb-2">
               Email Address
@@ -42,14 +70,15 @@ function LoginPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+            disabled={loading}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 disabled:bg-indigo-400"
           >
-            Log In
+            {loading ? 'Logging In...' : 'Log In'}
           </button>
         </form>
       </div>
     </div>
-  );
+  )
 }
 
-export default LoginPage;
+export default LoginPage
