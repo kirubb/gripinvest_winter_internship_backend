@@ -14,6 +14,11 @@ app.use(express.json());
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 
+
+// --- Add these two lines for products ---
+const productRoutes = require('./routes/product.routes');
+app.use('/api/products', productRoutes);
+
 // Health Check Endpoint (as required by the project)
 app.get('/health', async (req, res) => {
   try {
