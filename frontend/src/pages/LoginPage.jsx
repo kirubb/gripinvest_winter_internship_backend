@@ -1,7 +1,7 @@
-import React, 'useState'
+import React, {useState} from 'react'
 import axios from 'axios'
 
-function LoginPage() {
+function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -11,19 +11,12 @@ function LoginPage() {
     event.preventDefault()
     setLoading(true)
     setError('')
-
     try {
       const response = await axios.post(
         'http://localhost:3001/api/auth/login',
-        {
-          email: email,
-          password: password,
-        }
+        { email, password }
       )
-
-      const { token } = response.data
-      console.log('Login successful! Token:', token)
-      alert('Login successful! Check the console for your token.')
+      onLogin(response.data.token)
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.')
     } finally {
@@ -41,7 +34,6 @@ function LoginPage() {
               {error}
             </p>
           )}
-
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-bold mb-2">
               Email Address

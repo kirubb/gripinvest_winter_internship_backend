@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: kirit.baruah1
+      MYSQL_DATABASE: gripinvest_db
+      MYSQL_USER: grip_user
+      MYSQL_PASSWORD: kirit.baruah1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    environment:
+      # Match these with your backend/.env file and the db service above
+      DB_HOST: db
+      DB_USER: grip_user
+      DB_PASSWORD: kirit.baruah1
+      DB_NAME: gripinvest_db
+      JWT_SECRET: E7E8973EFC5B2DFFCB9D5D88A9382
+
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "5173:80"
+
+volumes:
+  mysql_data:
