@@ -1,5 +1,4 @@
-const investmentService = require('../services/investment.service');
-
+import investmentService from '../services/investment.service.js';
 // Controller to handle CREATING a new investment
 async function create(req, res) {
   try {
@@ -30,7 +29,7 @@ async function getPortfolio(req, res) {
   }
 }
 
-module.exports = {
+export default  {
   create,
   getPortfolio,
 };

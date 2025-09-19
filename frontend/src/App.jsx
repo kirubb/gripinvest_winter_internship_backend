@@ -5,6 +5,10 @@ import DashboardPage from './pages/DashboardPage'
 import ProductsPage from './pages/ProductsPage'
 import ProductDetailPage from './pages/ProductDetailPage'
 import SignupPage from './pages/SignupPage'
+import { UserProvider } from './context/UserContext'
+import ProfilePage from './pages/ProfilePage'
+
+
 
 function App() {
   const [token, setToken] = useState(null)
@@ -33,6 +37,7 @@ function App() {
   }
 
   return (
+  <UserProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/signup" element={<SignupPage />} />
@@ -52,8 +57,11 @@ function App() {
           path="/products/:productId"
           element={token ? <ProductDetailPage onLogout={handleLogout} /> : <Navigate to="/login" />}
         />
+        <Route path="/profile" element={token ? <ProfilePage onLogout={handleLogout} /> : <Navigate to="/login" />} />
+
       </Routes>
     </BrowserRouter>
+    </UserProvider>
   )
 }
 

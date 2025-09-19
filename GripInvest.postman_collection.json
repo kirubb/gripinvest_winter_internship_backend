@@ -83,6 +83,16 @@
 				{
 					"name": "Get All Products",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -93,6 +103,35 @@
 							"path": [
 								"api",
 								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AI Recommendations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/recommendations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"recommendations"
 							]
 						}
 					},
@@ -112,11 +151,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"AAA Rated Corporate Bond\",\n    \"investment_type\": \"bond\",\n    \"tenure_months\": 36,\n    \"annual_yield\": 8.25,\n    \"risk_level\": \"low\",\n    \"min_investment\": 10000.00,\n    \"description\": \"A highly rated corporate bond.\"\n}",
+							"raw": "{\n    \"name\": \"AAA Rated Corporate Bond\",\n    \"investment_type\": \"bond\",\n    \"tenure_months\": 36,\n    \"annual_yield\": 8.25,\n    \"risk_level\": \"low\",\n    \"min_investment\": 10000.00,\n    \"description\": \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

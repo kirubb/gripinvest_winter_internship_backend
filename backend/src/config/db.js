@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
 const isTestEnvironment = process.env.NODE_ENV === 'test';
 
@@ -17,4 +17,4 @@ if (!isTestEnvironment) {
   console.log('✅ MySQL Connection Pool Created');
 }
 
-module.exports = pool;
+export default pool;

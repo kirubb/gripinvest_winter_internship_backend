@@ -1,5 +1,4 @@
-const productService = require('../services/product.service');
-
+import productService from '../services/product.service.js';
 // Controller to handle CREATING a new product
 async function create(req, res) {
   try {
@@ -74,7 +73,7 @@ async function getRecommendations(req, res) {
   }
 }
 
-module.exports = {
+export default  {
   create,
   getAll,
   getOne,

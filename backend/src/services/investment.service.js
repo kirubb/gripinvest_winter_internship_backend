@@ -1,9 +1,11 @@
+import db from '../config/db.js';
+
 async function create(userId, productId, amount) {
   const connection = await db.getConnection();
   try {
     await connection.beginTransaction();
 
-    const [userRows] = await connection.query('SELECT balance, risk_appetite FROM users WHERE id = ? FOR UPDATE', [userId]);
+    const [userRows] = await connection.query('SELECT balance FROM users WHERE id = ? FOR UPDATE', [userId]);
     if (userRows.length === 0) throw new Error('User not found.');
     const user = userRows[0];
 
@@ -42,3 +44,21 @@ async function create(userId, productId, amount) {
     connection.release();
   }
 }
+
+async function findByUserId(userId) {
+  const [rows] = await db.query(
+    `SELECT
+       i.id, i.amount, i.invested_at, i.status, i.expected_return, i.maturity_date,
+       p.name AS product_name, p.investment_type, p.annual_yield, p.risk_level
+     FROM investments i
+     JOIN investment_products p ON i.product_id = p.id
+     WHERE i.user_id = ?`,
+    [userId]
+  );
+  return rows;
+}
+
+export default {
+  create,
+  findByUserId,
+};

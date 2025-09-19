@@ -1,29 +1,16 @@
-const express = require('express');
-const router = express.Router();
-const productController = require('../controllers/product.controller');
-const { authenticateToken } = require('../middleware/auth.middleware');
+import express from 'express'
+import productController from '../controllers/product.controller.js'
+import { authenticateToken } from '../middleware/auth.middleware.js'
 
-// Route to get all products
-// GET /api/products
-router.get('/', productController.getAll);
+const router = express.Router()
 
-// Route to create a new product
-// POST /api/products
-router.post('/', productController.create);
+router.get('/', authenticateToken, productController.getAll)
+router.post('/', authenticateToken, productController.create)
 
-// Route to get a single product by its ID
-// GET /api/products/:id
-router.get('/:id', productController.getOne);
+router.get('/recommendations', authenticateToken, productController.getRecommendations)
 
-// Route to update a product by its ID
-// PUT /api/products/:id
-router.put('/:id', productController.update);
+router.get('/:id', authenticateToken, productController.getOne)
+router.put('/:id', authenticateToken, productController.update)
+router.delete('/:id', authenticateToken, productController.remove)
 
-// Route to delete a product by its ID
-// DELETE /api/products/:id
-router.delete('/:id', productController.remove);
-
-router.get('/recommendations', authenticateToken, productController.getRecommendations);
-
-
-module.exports = router;
+export default router

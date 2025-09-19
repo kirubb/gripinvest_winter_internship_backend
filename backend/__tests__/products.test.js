@@ -1,8 +1,8 @@
-const request = require('supertest');
-const app = require('../src/app');
-const db = require('../src/config/db');
+import request from 'supertest';
+import app from '../src/app.js';
+import db from '../src/config/db.js';
 
-jest.mock('../src/middleware/auth.middleware', () => ({
+jest.mock('../src/middleware/auth.middleware.js', () => ({
   authenticateToken: (req, res, next) => {
     req.user = { id: 'test-user-id', email: 'test@example.com' };
     next();

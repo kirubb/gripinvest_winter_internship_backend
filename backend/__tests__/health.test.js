@@ -1,6 +1,6 @@
-const request = require('supertest');
-const app = require('../src/app');
-const db = require('../src/config/db'); // <-- 1. Import the database pool
+import request from 'supertest';
+import app from '../src/app.js';
+import db from '../src/config/db.js';// <-- 1. Import the database pool
 
 // This hook runs once after all tests in this file are done
 afterAll(async () => {

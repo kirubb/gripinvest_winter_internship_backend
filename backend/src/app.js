@@ -1,26 +1,25 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const db = require('./config/db');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import db from './config/db.js';
+import { loggerMiddleware } from './middleware/logger.middleware.js';
+import authRoutes from './routes/auth.routes.js';
+import productRoutes from './routes/product.routes.js';
+import investmentRoutes from './routes/investment.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-const { loggerMiddleware } = require('./middleware/logger.middleware');
 app.use(loggerMiddleware);
 
 // API Routes
-const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
-
-const productRoutes = require('./routes/product.routes');
 app.use('/api/products', productRoutes);
-
-const investmentRoutes = require('./routes/investment.routes');
 app.use('/api/investments', investmentRoutes);
+app.use('/api/user', userRoutes);
 
 // Health Check Endpoint
 app.get('/health', async (req, res) => {
@@ -44,4 +43,4 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Grip Invest Mini Platform API!');
 });
 
-module.exports = app; // Export the app for testing and for our server
+export default app; // Export the app for testing and for our server
