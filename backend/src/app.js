@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import investmentRoutes from './routes/investment.routes.js';
 import userRoutes from './routes/user.routes.js';
+import logRoutes from './routes/log.routes.js';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/investments', investmentRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/logs', logRoutes);
 
 // Health Check Endpoint
 app.get('/health', async (req, res) => {

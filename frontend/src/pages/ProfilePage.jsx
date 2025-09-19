@@ -20,7 +20,8 @@ function ProfilePage({ onLogout }) {
     setMessage('');
     try {
       const response = await apiClient.put('/user/profile', { risk_appetite: riskAppetite });
-      updateUser(response.data);
+      updateUser(response.data.user);
+      localStorage.setItem('token', response.data.token);
       setMessage('Risk appetite updated successfully!');
     } catch (error) {
       setMessage('Failed to update profile.');
@@ -36,7 +37,7 @@ function ProfilePage({ onLogout }) {
     }
     try {
       const response = await apiClient.put('/user/profile', { addBalance: parseFloat(addBalance) });
-      updateUser(response.data);
+      updateUser(response.data.user);
       setAddBalance('');
       setMessage('Balance added successfully!');
     } catch (error) {
@@ -55,10 +56,19 @@ function ProfilePage({ onLogout }) {
         <h1 className="text-3xl font-bold mb-8">Your Profile & Settings</h1>
 
         {message && (
-          <div className="bg-green-500 bg-opacity-75 text-white p-3 rounded-md text-center mb-6 max-w-md mx-auto">
+          <div className="bg-green-500 bg-opacity-75 text-white p-3 rounded-md text-center mb-6 max-w-lg mx-auto">
             {message}
           </div>
         )}
+        
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 max-w-lg mx-auto">
+            <h2 className="text-2xl font-bold mb-4">User Details</h2>
+            <div className="space-y-2">
+                <p><span className="font-bold text-gray-400">First Name:</span> {user.first_name}</p>
+                <p><span className="font-bold text-gray-400">Last Name:</span> {user.last_name}</p>
+                <p><span className="font-bold text-gray-400">Email:</span> {user.email}</p>
+            </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg">

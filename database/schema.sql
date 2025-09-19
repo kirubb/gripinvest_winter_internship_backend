@@ -5,6 +5,9 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     risk_appetite ENUM('low','moderate','high') DEFAULT 'moderate',
+    balance DECIMAL(15, 2) NOT NULL DEFAULT 100000.00,
+    reset_token_hash VARCHAR(255) NULL,
+    reset_token_expires DATETIME NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

@@ -66,11 +66,17 @@ function DashboardPage({ onLogout }) {
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold mb-4">Portfolio List</h2>
             {loading ? <p>Loading...</p> : portfolio.length > 0 ? (
-              <ul>
+              <ul className="space-y-4">
                 {portfolio.map((investment) => (
-                  <li key={investment.id} className="border-b border-gray-700 py-2 flex justify-between">
-                    <span>{investment.product_name}</span>
-                    <span>${parseFloat(investment.amount).toFixed(2)}</span>
+                  <li key={investment.id} className="border-b border-gray-700 pb-4 flex justify-between items-center">
+                    <div>
+                      <span className="font-bold block">{investment.product_name}</span>
+                      <span className="text-sm text-gray-400">Invested: {new Date(investment.invested_at).toLocaleDateString()}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="font-semibold">${parseFloat(investment.amount).toFixed(2)}</span>
+                      <span className="text-xs text-green-400 block">+{parseFloat(investment.expected_return).toFixed(2)} return</span>
+                    </div>
                   </li>
                 ))}
               </ul>

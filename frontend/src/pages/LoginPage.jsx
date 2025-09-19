@@ -68,6 +68,10 @@ function LoginPage({ onLogin }) {
           >
             {loading ? 'Logging In...' : 'Log In'}
           </button>
+          <div className="text-center mt-4">
+    <Link to="/forgot-password" className="text-sm text-indigo-400 hover:underline">Forgot Password?</Link>
+</div>
+
         </form>
         <p className="text-center text-gray-400 text-sm mt-6">
           Don't have an account? <Link to="/signup" className="text-indigo-400 hover:underline">Sign Up</Link>

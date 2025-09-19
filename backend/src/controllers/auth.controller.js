@@ -49,7 +49,30 @@ async function loginController(req, res) {
   }
 }
 
+async function forgotPasswordController(req, res) {
+  try {
+    const resetToken = await authService.forgotPassword(req.body.email);
+    console.log('--- PASSWORD RESET TOKEN (Copy this) ---');
+    console.log(resetToken);
+    console.log('-----------------------------------------');
+    res.json({ message: 'If a user with that email exists, a reset token has been generated. Check the server console.' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
+async function resetPasswordController(req, res) {
+  try {
+    await authService.resetPassword(req.body);
+    res.json({ message: 'Password has been reset successfully.' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
 export default {
   signupController,
   loginController,
+  resetPasswordController,
+  forgotPasswordController,
 };

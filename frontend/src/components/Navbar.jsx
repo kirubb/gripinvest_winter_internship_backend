@@ -27,6 +27,7 @@ function Navbar({ onLogout }) {
           <NavLink to="/profile" className={navLinkClass}>
             Profile
           </NavLink>
+          <NavLink to="/logs" className={navLinkClass}>Activity</NavLink> 
         </div>
       </div>
       <div className="flex items-center space-x-6">
