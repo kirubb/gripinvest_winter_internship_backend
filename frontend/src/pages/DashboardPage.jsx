@@ -16,7 +16,7 @@ function DashboardPage({ onLogout }) {
       setPortfolio(response.data);
     } catch (error) {
       console.error('Failed to fetch portfolio', error);
-      toast.error('Could not load your portfolio.');
+      alert('Could not load your portfolio.');
     } finally {
       setLoading(false);
     }
@@ -32,11 +32,11 @@ function DashboardPage({ onLogout }) {
     }
     try {
       await apiClient.put(`/investments/${investmentId}/cancel`);
-      toast.success('Investment cancelled successfully!');
+      alert('Investment cancelled successfully!');
       fetchPortfolio();
       fetchUser();
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Cancellation failed.');
+      alert(error.response?.data?.message || 'Cancellation failed.');
     }
   };
 
