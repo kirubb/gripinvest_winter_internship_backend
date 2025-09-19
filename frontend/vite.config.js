@@ -5,11 +5,19 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
+    tailwindcss({
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }),
   ],
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/setupTests.js', // We will create this file next
+    setupFiles: './src/setupTests.js',
   },
 })
