@@ -1,5 +1,7 @@
 import request from 'supertest';
 import app from '../src/app.js';
+import { jest } from '@jest/globals';
+
 import db from '../src/config/db.js';// <-- 1. Import the database pool
 
 // This hook runs once after all tests in this file are done

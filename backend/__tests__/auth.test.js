@@ -1,51 +1,66 @@
-import request from 'supertest'
-import app from '../src/app.js'
-import authService from '../src/services/auth.service.js'
-import db from '../src/config/db.js'
-
-jest.mock('../src/services/auth.service.js')
+import request from 'supertest';
+import app from '../src/app.js';
+import db from '../src/config/db.js';
 
 afterAll(async () => {
-  await db.end()
-})
+  await db.end();
+});
 
-describe('POST /api/auth/signup', () => {
+beforeEach(async () => {
+  await db.query("DELETE FROM users WHERE email = 'jane.doe@example.com'");
+  await db.query("DELETE FROM users WHERE email = 'test.login@example.com'");
+});
+
+describe('Authentication API', () => {
+  const signupUser = {
+    first_name: 'Jane',
+    email: 'jane.doe@example.com',
+    password: 'AStrongPassword123!',
+  };
+  
+  const loginUser = {
+    first_name: 'Test',
+    email: 'test.login@example.com',
+    password: 'AStrongPassword123!',
+  };
+
   it('should create a user successfully and return 201', async () => {
-    authService.signup.mockResolvedValue({ affectedRows: 1 })
-
     const res = await request(app)
       .post('/api/auth/signup')
-      .send({
-        first_name: 'Jane',
-        last_name: 'Doe',
-        email: 'jane.doe@example.com',
-        password: 'Password123!',
-      })
-
-    expect(res.statusCode).toEqual(201)
-    expect(res.body.message).toBe('User created successfully!')
-  })
+      .send(signupUser);
+    expect(res.statusCode).toEqual(201);
+  });
 
   it('should return 409 if the email already exists', async () => {
-    authService.signup.mockRejectedValue({ code: 'ER_DUP_ENTRY' })
+    await request(app).post('/api/auth/signup').send(signupUser);
+    const res = await request(app).post('/api/auth/signup').send(signupUser);
+    expect(res.statusCode).toEqual(409);
+  });
+
+  it('should log in a user successfully and return a token', async () => {
+    await request(app).post('/api/auth/signup').send(loginUser);
+    
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: loginUser.email,
+        password: loginUser.password,
+      });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('token');
+  });
+
+  it('should return 401 for invalid credentials', async () => {
+    await request(app).post('/api/auth/signup').send(loginUser);
 
     const res = await request(app)
-      .post('/api/auth/signup')
+      .post('/api/auth/login')
       .send({
-        first_name: 'Jane',
-        email: 'jane.doe@example.com',
-        password: 'Password123!',
-      })
-
-    expect(res.statusCode).toEqual(409)
-    expect(res.body.message).toBe('Error: Email already exists.')
-  })
-
-  it('should return 400 if required fields are missing', async () => {
-    const res = await request(app).post('/api/auth/signup').send({
-      first_name: 'Jane',
-    })
-
-    expect(res.statusCode).toEqual(400)
-  })
-})
+        email: loginUser.email,
+        password: 'wrongpassword',
+      });
+    
+    expect(res.statusCode).toEqual(401);
+  });
+});

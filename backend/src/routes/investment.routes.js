@@ -1,16 +1,11 @@
 import express from 'express';
-const router = express.Router();
 import investmentController from '../controllers/investment.controller.js';
 import { authenticateToken } from '../middleware/auth.middleware.js';
 
-// All routes in this file are protected and require a valid JWT
+const router = express.Router();
 
-// Route to create a new investment
-// POST /api/investments
 router.post('/', authenticateToken, investmentController.create);
-
-// Route to get the logged-in user's portfolio
-// GET /api/investments
 router.get('/', authenticateToken, investmentController.getPortfolio);
+router.put('/:investmentId/cancel', authenticateToken, investmentController.cancel);
 
-export default router
+export default router;

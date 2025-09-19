@@ -58,7 +58,36 @@ async function findByUserId(userId) {
   return rows;
 }
 
+async function cancel(userId, investmentId) {
+  const connection = await db.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    const [investmentRows] = await connection.query(
+      'SELECT * FROM investments WHERE id = ? AND user_id = ? FOR UPDATE',
+      [investmentId, userId]
+    );
+
+    if (investmentRows.length === 0) throw new Error('Investment not found or does not belong to user.');
+    const investment = investmentRows[0];
+    if (investment.status !== 'active') throw new Error('Only active investments can be cancelled.');
+
+    await connection.query('UPDATE investments SET status = ? WHERE id = ?', ['cancelled', investmentId]);
+    await connection.query('UPDATE users SET balance = balance + ? WHERE id = ?', [investment.amount, userId]);
+
+    await connection.commit();
+    return { message: 'Investment cancelled and amount refunded successfully.' };
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
+
 export default {
   create,
   findByUserId,
+  cancel,
 };

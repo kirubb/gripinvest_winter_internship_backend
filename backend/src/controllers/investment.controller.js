@@ -29,7 +29,19 @@ async function getPortfolio(req, res) {
   }
 }
 
+async function cancel(req, res) {
+  try {
+    const userId = req.user.id;
+    const { investmentId } = req.params;
+    const result = await investmentService.cancel(userId, investmentId);
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
 export default  {
   create,
   getPortfolio,
+  cancel,
 };
