@@ -64,10 +64,21 @@ async function remove(req, res) {
   }
 }
 
+async function getRecommendations(req, res) {
+  try {
+    const userRiskAppetite = req.user.risk_appetite; // We'll need to add this to the JWT
+    const products = await productService.getRecommendations(userRiskAppetite);
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching recommendations' });
+  }
+}
+
 module.exports = {
   create,
   getAll,
   getOne,
   update,
   remove,
+  getRecommendations
 };

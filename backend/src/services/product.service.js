@@ -61,10 +61,20 @@ async function remove(id) {
   return result.affectedRows
 }
 
+async function getRecommendations(riskAppetite) {
+  const [rows] = await db.query(
+    'SELECT * FROM investment_products WHERE risk_level = ? ORDER BY annual_yield DESC LIMIT 5',
+    [riskAppetite]
+  );
+  return rows;
+}
+
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
   remove,
+  getRecommendations,
 }

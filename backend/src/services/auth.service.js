@@ -62,7 +62,7 @@ async function login(loginData) {
   if (!isMatch) {
     return null
   }
-  const payload = { id: user.id, email: user.email, name: user.first_name }
+  const payload = { id: user.id, email: user.email, name: user.first_name, risk_appetite: user.risk_appetite }
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
   return token
 }
