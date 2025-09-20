@@ -6,7 +6,7 @@ RUN npm install
 COPY . .
 
 # Stage 2: Create the final, smaller production image
-FROM node:18-alpine
+FROM node:20-alpine
 WORKDIR /app
 COPY --from=builder /app ./
 EXPOSE 3001
