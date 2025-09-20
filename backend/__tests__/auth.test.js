@@ -1,48 +1,48 @@
-import { jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../src/app.js';
 import db from '../src/config/db.js';
 
-jest.unstable_mockModule('../src/services/auth.service.js', () => ({
-  default: {
-    signup: jest.fn(),
-    login: jest.fn(),
-  },
-}));
+describe('Authentication API Flow', () => {
+  const testUser = {
+    first_name: 'Integration',
+    email: 'integration.test@example.com',
+    password: 'AStrongPassword123!',
+  };
 
-const { default: authService } = await import('../src/services/auth.service.js');
-
-afterAll(async () => {
-  await db.end();
-});
-
-beforeEach(() => {
-  jest.clearAllMocks();
-});
-
-describe('POST /api/auth/signup', () => {
-  // ... your existing signup tests are here ...
-});
-
-describe('POST /api/auth/login', () => {
-  it('should return a token for a successful login', async () => {
-    authService.login.mockResolvedValue('fake_jwt_token');
-
-    const res = await request(app)
-      .post('/api/auth/login')
-      .send({ email: 'test@example.com', password: 'password123' });
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.token).toBe('fake_jwt_token');
+  // Clean up before and after all tests in this file
+  beforeAll(async () => {
+    await db.query("DELETE FROM users WHERE email = ?", [testUser.email]);
   });
 
-  it('should return 401 for invalid credentials', async () => {
-    authService.login.mockResolvedValue(null);
+  afterAll(async () => {
+    await db.query("DELETE FROM users WHERE email = ?", [testUser.email]);
+    await db.end();
+  });
 
-    const res = await request(app)
+  it('should handle the full user authentication lifecycle', async () => {
+    // 1. Test successful signup
+    const signupRes = await request(app)
+      .post('/api/auth/signup')
+      .send(testUser);
+    expect(signupRes.statusCode).toEqual(201);
+
+    // 2. Test duplicate signup failure
+    const duplicateRes = await request(app)
+      .post('/api/auth/signup')
+      .send(testUser);
+    expect(duplicateRes.statusCode).toEqual(409);
+
+    // 3. Test login with wrong password
+    const wrongPassRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'test@example.com', password: 'wrongpassword' });
+      .send({ email: testUser.email, password: 'wrong-password' });
+    expect(wrongPassRes.statusCode).toEqual(401);
 
-    expect(res.statusCode).toEqual(401);
+    // 4. Test successful login
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({ email: testUser.email, password: testUser.password });
+    expect(loginRes.statusCode).toEqual(200);
+    expect(loginRes.body).toHaveProperty('token');
   });
 });

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.57% </span>
+                <span class="strong">80.95% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/21</span>
+                <span class='fraction'>17/21</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.57% </span>
+                <span class="strong">80.95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/21</span>
+                <span class='fraction'>17/21</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -112,15 +112,27 @@
 <a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -129,23 +141,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -169,29 +169,29 @@ async function create(req, res) {
     const result = await investmentService.create(userId, productId, amount);
     res.status(201).json(result);
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console.error('Error creating investment:', error);</span>
-<span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: error.message });</span>
+    console.error('Error creating investment:', error);
+    res.status(500).json({ message: error.message });
   }
 }
 &nbsp;
 // Controller to handle FETCHING the user's portfolio
-async function <span class="fstat-no" title="function not covered" >getPortfolio(</span>req, res) {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const userId = <span class="cstat-no" title="statement not covered" >req.user.id;</span> // Get user ID from the authenticated token
-    const portfolio = <span class="cstat-no" title="statement not covered" >await investmentService.findByUserId(userId);</span>
-<span class="cstat-no" title="statement not covered" >    res.status(200).json(portfolio);</span>
+async function getPortfolio(req, res) {
+  try {
+    const userId = req.user.id; // Get user ID from the authenticated token
+    const portfolio = await investmentService.findByUserId(userId);
+    res.status(200).json(portfolio);
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    console.error('Error fetching portfolio:', error);</span>
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: 'Error fetching portfolio' });</span>
   }
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >cancel(</span>req, res) {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const userId = <span class="cstat-no" title="statement not covered" >req.user.id;</span>
-    const { investmentId } = <span class="cstat-no" title="statement not covered" >req.params;</span>
-    const result = <span class="cstat-no" title="statement not covered" >await investmentService.cancel(userId, investmentId);</span>
-<span class="cstat-no" title="statement not covered" >    res.json(result);</span>
+async function cancel(req, res) {
+  try {
+    const userId = req.user.id;
+    const { investmentId } = req.params;
+    const result = await investmentService.cancel(userId, investmentId);
+    res.json(result);
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    res.status(400).json({ message: error.message });</span>
   }
@@ -208,7 +208,7 @@ export default  {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-19T17:27:33.582Z
+                at 2025-09-20T08:12:47.283Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
