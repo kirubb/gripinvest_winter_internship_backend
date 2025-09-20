@@ -1,107 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import ProductsPage from "./pages/ProductsPage";
-import ProductDetailPage from "./pages/ProductDetailPage";
-import SignupPage from "./pages/SignupPage";
-import { UserProvider } from "./context/UserContext";
-import ProfilePage from "./pages/ProfilePage";
-import LogsPage from "./pages/LogsPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { UserProvider, useUser } from './context/UserContext.jsx';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import ProductsPage from './pages/ProductsPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import SignupPage from './pages/SignupPage';
+import ProfilePage from './pages/ProfilePage';
+import LogsPage from './pages/LogsPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
-function App() {
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-    setLoading(false);
-  }, []);
-
-  const handleLogin = (newToken) => {
-    localStorage.setItem("token", newToken);
-    setToken(newToken);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-  };
+function AppRoutes() {
+  const { token, loading } = useUser();
 
   if (loading) {
     return <div className="min-h-screen bg-gray-900" />;
   }
 
   return (
+    <Routes>
+      <Route path="/signup" element={!token ? <SignupPage /> : <Navigate to="/" />} />
+      <Route path="/login" element={!token ? <LoginPage /> : <Navigate to="/" />} />
+      <Route path="/forgot-password" element={!token ? <ForgotPasswordPage /> : <Navigate to="/" />} />
+      <Route path="/reset-password/:token" element={!token ? <ResetPasswordPage /> : <Navigate to="/" />} />
+      
+      <Route path="/" element={token ? <DashboardPage /> : <Navigate to="/login" />} />
+      <Route path="/products" element={token ? <ProductsPage /> : <Navigate to="/login" />} />
+      <Route path="/products/:productId" element={token ? <ProductDetailPage /> : <Navigate to="/login" />} />
+      <Route path="/profile" element={token ? <ProfilePage /> : <Navigate to="/login" />} />
+      <Route path="/logs" element={token ? <LogsPage /> : <Navigate to="/login" />} />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
     <UserProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/signup" element={<SignupPage />} />
-          <Route
-            path="/login"
-            element={
-              token ? <Navigate to="/" /> : <LoginPage onLogin={handleLogin} />
-            }
-          />
-          <Route
-            path="/"
-            element={
-              token ? (
-                <DashboardPage onLogout={handleLogout} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="/products"
-            element={
-              token ? (
-                <ProductsPage onLogout={handleLogout} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="/products/:productId"
-            element={
-              token ? (
-                <ProductDetailPage onLogout={handleLogout} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              token ? (
-                <ProfilePage onLogout={handleLogout} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="/logs"
-            element={
-              token ? (
-                <LogsPage onLogout={handleLogout} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        </Routes>
-        
+        <AppRoutes />
       </BrowserRouter>
     </UserProvider>
   );
